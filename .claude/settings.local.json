@@ -16,7 +16,8 @@
       "Bash(mv \"C:/Users/TE627445/.claude/user.md\" .claude/global/user.md)",
       "Bash(mv \"C:/Users/TE627445/.claude/profiles\" .claude/global/profiles)",
       "Bash(mv \"C:/Users/TE627445/.claude/rules\" .claude/global/rules)",
-      "Bash(git config *)"
+      "Bash(git config *)",
+      "Bash(git commit -m 'Add AR/ar_sergi.sql notebook for L1 fact_accounts_receivable_invoice *)"
     ]
   }
 }
