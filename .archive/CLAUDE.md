@@ -18,8 +18,9 @@ Reference material to support work on this client is organized under `.claude/`:
 - `.claude/databricks/` — Databricks-specific manuals, runbooks, workspace notes (clusters, jobs, Unity Catalog, etc.).
 - `.claude/framework/` — Internal framework documentation (libraries, patterns, conventions specific to this client).
 - `.claude/skills/` — Reusable skill / how-to material for recurring tasks.
+- `.claude/archive/` — Archived global Claude config (CLAUDE.md, user.md, profiles/, rules/). Kept in the repo for reference / history only — not loaded by Claude Code at runtime.
 
-These folders are intentionally seeded empty (`.gitkeep`) and will be populated with documents the user provides. Before starting a task, check the relevant subfolder for context — especially before making assumptions about Databricks setup or framework conventions.
+Before starting a task, check the relevant subfolder for context — especially before making assumptions about Databricks setup or framework conventions.
 
 ## Working directory note
 

@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git clone *)",
+      "Bash(git init *)",
+      "Bash(git remote *)",
+      "Bash(git fetch *)",
+      "Bash(git checkout *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(git commit --amend -m ' *)",
+      "Bash(git ls-tree *)",
+      "Bash(mkdir -p .claude/global)",
+      "Bash(mv \"C:/Users/TE627445/.claude/CLAUDE.md\" .claude/global/CLAUDE.md)",
+      "Bash(mv \"C:/Users/TE627445/.claude/user.md\" .claude/global/user.md)",
+      "Bash(mv \"C:/Users/TE627445/.claude/profiles\" .claude/global/profiles)",
+      "Bash(mv \"C:/Users/TE627445/.claude/rules\" .claude/global/rules)",
+      "Bash(git config *)",
+      "Bash(git commit -m 'Add AR/ar_sergi.sql notebook for L1 fact_accounts_receivable_invoice *)",
+      "Bash(cp \"C:/Users/TE627445/OneDrive - TE Connectivity/Databricks/.claude/global/CLAUDE.md\" \"C:/Users/TE627445/.claude/CLAUDE.md\")",
+      "Bash(cp \"C:/Users/TE627445/OneDrive - TE Connectivity/Databricks/.claude/global/user.md\" \"C:/Users/TE627445/.claude/user.md\")",
+      "Bash(cp -r \"C:/Users/TE627445/OneDrive - TE Connectivity/Databricks/.claude/global/profiles\" \"C:/Users/TE627445/.claude/profiles\")",
+      "Bash(cp -r \"C:/Users/TE627445/OneDrive - TE Connectivity/Databricks/.claude/global/rules\" \"C:/Users/TE627445/.claude/rules\")",
+      "Bash(git mv *)",
+      "Bash(rm \"C:/Users/TE627445/.claude/CLAUDE.md\" \"C:/Users/TE627445/.claude/user.md\")",
+      "Bash(rm -rf \"C:/Users/TE627445/.claude/profiles\" \"C:/Users/TE627445/.claude/rules\")"
+    ]
+  }
+}
