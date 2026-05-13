@@ -1,50 +1,100 @@
-# Rule: Python files must be valid Databricks notebook source
+# Rule: Databricks notebook source format
 
-**Scope:** Any `.py` file intended to run in Databricks (notebook, job task, DLT pipeline). The file must be importable into a Databricks workspace and recognized as a notebook — not as a plain script.
+**Scope:** Any source file in this repo intended to be imported into Databricks as a **notebook** — typically `.py` (Python), `.sql` (SQL), `.scala`, or `.r`. The file must be recognized as a notebook on import, not as a plain script.
 
-## Mandatory file structure
+**Canonical example:** [`example-notebook.sql`](example-notebook.sql) — real working SQL notebook from the OneData framework. Use it as the structural reference for new notebooks.
 
-1. **First line must be exactly:**
-   ```python
-   # Databricks notebook source
-   ```
-   This single marker is what Databricks uses to detect a Python file as a notebook on import. Without it, the file imports as a plain `.py` file.
+## Mandatory first line
 
-2. **Cell separator:**
-   ```python
-   # COMMAND ----------
-   ```
-   Place between every cell. Surround with one blank line above and below for readability.
+The very first line tells Databricks this is a notebook. The comment style must match the file's primary language:
 
-3. **Cell title (optional but preferred for clarity):**
-   ```python
-   # DBTITLE 1,Load source data
-   ```
-   Goes at the top of a cell, immediately after `# COMMAND ----------`.
+| File type | First line |
+|-----------|------------|
+| `.py` (Python) | `# Databricks notebook source` |
+| `.sql` (SQL)   | `-- Databricks notebook source` |
+| `.scala`       | `// Databricks notebook source` |
+| `.r`           | `# Databricks notebook source` |
 
-4. **Magic commands (non-Python cells):** prefix every line of the cell with `# MAGIC `.
-   - Markdown:
-     ```python
-     # MAGIC %md
-     # MAGIC ## Section heading
-     # MAGIC Plain markdown lines, each prefixed with `# MAGIC `.
-     ```
-   - SQL:
-     ```python
-     # MAGIC %sql
-     # MAGIC SELECT *
-     # MAGIC FROM tedatacatalog_dev.admin.data_flow_control_header
-     # MAGIC WHERE is_active = 'Y'
-     ```
-   - Other supported magics: `%scala`, `%r`, `%sh`, `%fs`, `%run`, `%pip`.
+Without this marker, Databricks imports the file as a plain Workspace file. **Never omit it.**
 
-## Minimal valid template
+## Cell separator
+
+Between every cell, on its own line, using the same comment style as the file:
+
+| File type | Separator |
+|-----------|-----------|
+| `.py`     | `# COMMAND ----------` |
+| `.sql`    | `-- COMMAND ----------` |
+| `.scala`  | `// COMMAND ----------` |
+
+Surround with one blank line above and below.
+
+## Cell title (preferred)
+
+Optional but strongly preferred — gives every cell a visible heading in the UI:
+
+| File type | Title syntax |
+|-----------|--------------|
+| `.py`     | `# DBTITLE 1,<title>` |
+| `.sql`    | `-- DBTITLE 1,<title>` |
+| `.scala`  | `// DBTITLE 1,<title>` |
+
+Placed immediately after `# COMMAND ----------`. The `1` is required (cell-title version). Title text is everything after the comma.
+
+## Magic commands (other-language cells)
+
+Every line of a magic cell must be prefixed with the file's `MAGIC` marker:
+
+| File type | Magic prefix |
+|-----------|--------------|
+| `.py`     | `# MAGIC `   |
+| `.sql`    | `-- MAGIC `  |
+| `.scala`  | `// MAGIC `  |
+
+Supported magics: `%md`, `%sql`, `%python`, `%scala`, `%r`, `%sh`, `%fs`, `%run`, `%pip`.
+
+**SQL notebook example — Markdown cell:**
+```sql
+-- MAGIC %md
+-- MAGIC ## Section heading
+-- MAGIC Plain markdown lines, each prefixed.
+```
+
+**Python notebook example — SQL cell:**
+```python
+# MAGIC %sql
+# MAGIC SELECT count(*) FROM admin.data_flow_control_header
+```
+
+## Minimal SQL notebook template
+
+```sql
+-- Databricks notebook source
+-- MAGIC %md
+-- MAGIC # Notebook title
+-- MAGIC Short description.
+
+-- COMMAND ----------
+
+-- DBTITLE 1,Inspect header
+select *
+from admin.data_flow_control_header
+where DATA_FLOW_GROUP_ID = 'FINANCE_FIN360_ACCOUNTS_RECEIVABLE_SNAPSHOT_L1';
+
+-- COMMAND ----------
+
+-- DBTITLE 1,Inspect detail
+select *
+from admin.data_flow_pb_detail
+where DATA_FLOW_GROUP_ID = 'FINANCE_FIN360_ACCOUNTS_RECEIVABLE_SNAPSHOT_L1';
+```
+
+## Minimal Python notebook template
 
 ```python
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # Notebook title
-# MAGIC Short description of what this notebook does.
 
 # COMMAND ----------
 
@@ -61,31 +111,24 @@ display(df)
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC SELECT count(*) FROM tedatacatalog_dev.admin.data_flow_control_header
+# MAGIC SELECT count(*) FROM admin.data_flow_control_header
 
 # COMMAND ----------
 
-# DBTITLE 1,Exit
 dbutils.notebook.exit("OK")
 ```
 
 ## Hard rules
 
-- **Never** omit the `# Databricks notebook source` first line. If a Python file in this repo is intended to be imported as a notebook and it doesn't start with that line, treat it as a bug.
-- **Never** mix `# COMMAND ----------` with `# %%` (Jupyter / VS Code interactive) separators in the same file — Databricks only understands the former.
-- Magic-command cells must use `# MAGIC ` on **every** line including blank lines (`# MAGIC` alone, no trailing content).
-- Imports and module-level code go inside a cell (after the first `# COMMAND ----------`), not above it.
-- Cell-title comments must use the exact form `# DBTITLE 1,<title>` (no space after the comma is fine; the `1` is required).
-- Assume `spark`, `dbutils`, and `display` are pre-bound at runtime — do not import or define them.
-
-## Import workflow (how Databricks recognizes the file)
-
-1. Workspace → **Import** → upload the `.py` file or pull from Repos / Git folder.
-2. With the first-line marker present, Databricks renders it as a notebook (cells, magic commands, titles all visible).
-3. Without the marker, the file imports as a plain Python source under Workspace files — runnable via `%run` but not as a notebook UI.
+- **Never** omit the first-line marker — that single line is what makes the file a notebook on import.
+- **Never** mix Jupyter `# %%` separators with Databricks `-- COMMAND ----------` / `# COMMAND ----------` in the same file.
+- Comment style of all framework markers (`Databricks notebook source`, `COMMAND ----------`, `DBTITLE`, `MAGIC`) **must match the file's primary language**. A `.sql` file with `# COMMAND ----------` will not be recognized.
+- Magic-command cells must use the `MAGIC ` prefix on **every** line, including blank lines (just `-- MAGIC` or `# MAGIC` alone).
+- In Python notebooks: assume `spark`, `dbutils`, and `display` are pre-bound at runtime — never import or define them.
 
 ## When this rule applies
 
-- **Applies:** any `.py` file in this repo that will be deployed to Databricks (e.g., paths referenced in `DATA_FLOW_PB_DETAIL.GENERIC_SCRIPTS`, DLT pipeline notebooks, job task notebooks).
-- **Does not apply:** local helper modules, test files, build scripts, or any `.py` file that is not meant to be a Databricks notebook. These remain plain Python.
-- If in doubt, ask the user before writing — once a file is committed without the marker, fixing it requires re-import in Databricks.
+- **Applies:** any file in this repo that will be deployed to Databricks (e.g., paths referenced in `DATA_FLOW_PB_DETAIL.GENERIC_SCRIPTS`, DLT pipeline notebooks, job task notebooks, exploratory notebooks committed to the repo).
+- **Does not apply:** plain helper modules, tests, build scripts, or any source file that is not meant to be imported as a Databricks notebook. Those remain regular Python / SQL files without the markers.
+
+If unsure whether a file should be a notebook, ask before writing — once it's committed without the marker, fixing it requires re-import in Databricks.
