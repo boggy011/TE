@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git clone *)",
+      "Bash(git init *)",
+      "Bash(git remote *)",
+      "Bash(git fetch *)",
+      "Bash(git checkout *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(git commit --amend -m ' *)",
+      "Bash(git ls-tree *)",
+      "Bash(mkdir -p .claude/global)",
+      "Bash(mv \"C:/Users/TE627445/.claude/CLAUDE.md\" .claude/global/CLAUDE.md)",
+      "Bash(mv \"C:/Users/TE627445/.claude/user.md\" .claude/global/user.md)",
+      "Bash(mv \"C:/Users/TE627445/.claude/profiles\" .claude/global/profiles)",
+      "Bash(mv \"C:/Users/TE627445/.claude/rules\" .claude/global/rules)"
+    ]
+  }
+}
