@@ -15,7 +15,8 @@
       "Bash(mv \"C:/Users/TE627445/.claude/CLAUDE.md\" .claude/global/CLAUDE.md)",
       "Bash(mv \"C:/Users/TE627445/.claude/user.md\" .claude/global/user.md)",
       "Bash(mv \"C:/Users/TE627445/.claude/profiles\" .claude/global/profiles)",
-      "Bash(mv \"C:/Users/TE627445/.claude/rules\" .claude/global/rules)"
+      "Bash(mv \"C:/Users/TE627445/.claude/rules\" .claude/global/rules)",
+      "Bash(git config *)"
     ]
   }
 }
